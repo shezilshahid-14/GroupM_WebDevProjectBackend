@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-await mongoose.connect(process.env.MONGO_URI);
 const connectDB = async () => {
     try {
         await mongoose.connect("mongodb://localhost:27017/groundverseDB");
