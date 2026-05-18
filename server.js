@@ -6,6 +6,7 @@ const connectDB = require("./db");
 const User = require("./models/User");
 const Arena = require("./models/Arena");
 const app = express();
+const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 app.use(cors());
 app.use(express.json());
 connectDB();
