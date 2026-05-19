@@ -65,3 +65,4 @@ app.get("/api/arenas/:id", async (req, res) => {
     res.json(arena);
 });
 app.listen(5000, () => console.log("Backend running on port 5000"));
+module.exports = app;
