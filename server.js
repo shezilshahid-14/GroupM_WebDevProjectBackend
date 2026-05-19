@@ -1,5 +1,3 @@
-const path = require("path");
-require("dotenv").config({ path: path.resolve(__dirname, "groundverse.env") });
 const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
@@ -10,8 +8,7 @@ const Arena = require("./models/Arena");
 const app = express();
 app.use(cors());
 app.use(express.json());
-const PORT = process.env.PORT || 5000;
-connectDB(process.env.MONGO_URI);
+connectDB();
 const seedArenas = async () => {
     await Arena.deleteMany({}); 
     
@@ -55,7 +52,7 @@ app.post("/api/login", async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ error: "Invalid credentials" });
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || "secretKey123", { expiresIn: process.env.JWT_EXPIRES_IN || "1h" });
+        const token = jwt.sign({ id: user._id }, "secretKey123", { expiresIn: "1h" });
         res.json({ message: "Login successful!", name: user.name, token });
     } catch (err) { res.status(500).json({ error: "Server error" }); }
 });
@@ -67,7 +64,4 @@ app.get("/api/arenas/:id", async (req, res) => {
     const arena = await Arena.findById(req.params.id);
     res.json(arena);
 });
-if (!process.env.VERCEL) {
-    app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
-}
-module.exports = app;
+app.listen(5000, () => console.log("Backend running on port 5000"));
